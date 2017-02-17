@@ -1,0 +1,18 @@
+{
+  "name": "voting_app",
+  "version": "1.0.0",
+  "description": "voting app for tertiary institutions",
+  "main": "src/index.js",
+  "repository": "github.com/tonyalaribe/voting_app",
+  "author": "tonyalaribe",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack src/index.js public/js/app.js -d --watch"
+  },
+  "dependencies": {
+    "mithril": "^1.0.1"
+  },
+  "devDependencies": {
+    "webpack": "^2.2.1"
+  }
+}
