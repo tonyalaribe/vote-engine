@@ -20,25 +20,31 @@ export var VotingModel = {
 
     m.request({
     method: "POST",
-    url: BACKEND_URL+"/new_session",
+    url: BACKEND_URL+"/api/new_session",
     data: this.Data,
     })
     .then(function(result) {
         console.log(result)
+        m.route.set("/current_session",{},{})
     })
   }
 }
 
 export var ElectionModel = {
+  IsElectionSession:false,
   Data:{Positions:[]},
   GetDetails:function(){
     m.request({
     method: "GET",
-    url: BACKEND_URL+"/get_session",
+    url: BACKEND_URL+"/api/get_session",
     })
     .then((result)=>{
         console.log(result)
         this.Data = result
+        if (result.ElectionName!=""){
+          this.IsElectionSession = true
+        }
+        
     })
   }
 }
@@ -48,7 +54,7 @@ export var PositionModel = {
   NewCandidate:function(i,name,position){
     return m.request({
     method: "GET",
-    url: BACKEND_URL+`/new_contestant?key=${i}&name=${name}&position=${position}`,
+    url: BACKEND_URL+`/api/new_contestant?key=${i}&name=${name}&position=${position}`,
     })
     .then((result)=>{
         console.log(result)
@@ -65,7 +71,7 @@ export var PositionModel = {
   GetPosition:function(i){
     return m.request({
     method: "GET",
-    url: BACKEND_URL+`/get_position?key=${i}`,
+    url: BACKEND_URL+`/api/get_position?key=${i}`,
     })
     .then((result)=>{
         console.log(result)

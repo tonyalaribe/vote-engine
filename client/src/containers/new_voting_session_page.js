@@ -3,7 +3,8 @@ import m from 'mithril';
 import {VotingModel} from '../models/index.js'
 
 var NewVotingSessionPage = {
-  increment:function(v){
+  increment:function(e){
+    e.preventDefault()
     VotingModel.Data.contestants++
   },
   view:function(vnode){
@@ -32,14 +33,14 @@ var NewVotingSessionPage = {
         }},
           m("div.mv2",
             m("label.w-50.dib","Name of Election"),
-            m("input[type=text,placeholder=welcome].pa2",{onchange:m.withAttr("value",(v)=>{
+            m("input[type=text][placeholder=eg. SUG election].pa2",{onchange:m.withAttr("value",(v)=>{
               console.log(v)
               VotingModel.Data.ElectionName = v
             })})
           ),
           m("div.mv2",
             m("label.w-50.dib","Election Type"),
-            m("input[type=text][placeholder=welcome to ddd].pa2",{onchange:m.withAttr("value",(v)=>{
+            m("input[type=text][placeholder=eg. students].pa2",{onchange:m.withAttr("value",(v)=>{
               VotingModel.Data.ElectionType = v
             })})
           ),
@@ -48,7 +49,7 @@ var NewVotingSessionPage = {
             positionsInput
           ),
           m("div",
-            m("button.pa2",{onclick:()=>this.increment()},"add position")
+            m("button.pa2",{onclick:this.increment},"add position")
           ),
           m("div.mv3.tr",
             m("button.ph3.pv2", "submit")

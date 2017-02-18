@@ -11,10 +11,11 @@ import (
 )
 
 type Election struct {
-	ID           string
-	ElectionName string
-	ElectionType string
-	Positions    []struct {
+	ID              string
+	ElectionName    string
+	ElectionType    string
+	RunningElection bool
+	Positions       []struct {
 		Key   int
 		Title string
 	}

@@ -55,10 +55,10 @@ func main() {
 	router := NewRouter()
 	commonHandlers := alice.New()
 
-	router.Post("/new_session", commonHandlers.ThenFunc(NewSessionHandler))
-	router.Get("/get_session", commonHandlers.ThenFunc(GetSessionHandler))
-	router.Get("/new_contestant", commonHandlers.ThenFunc(AddContestantHandler))
-	router.Get("/get_position", commonHandlers.ThenFunc(GetPositionHandler))
+	router.Post("/api/new_session", commonHandlers.ThenFunc(NewSessionHandler))
+	router.Get("/api/get_session", commonHandlers.ThenFunc(GetSessionHandler))
+	router.Get("/api/new_contestant", commonHandlers.ThenFunc(AddContestantHandler))
+	router.Get("/api/get_position", commonHandlers.ThenFunc(GetPositionHandler))
 
 	fileServer := http.FileServer(http.Dir("./client/public"))
 	router.GET("/public/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {

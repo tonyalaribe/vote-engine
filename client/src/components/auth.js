@@ -5,6 +5,7 @@ var m = require("mithril")
     console.log("in auth")
     let auth = localStorage.getItem("auth")
     console.log(auth)
+    
   },
   view:function(vnode){
     console.info(vnode.attrs.id)
