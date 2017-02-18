@@ -31,6 +31,7 @@ var (
 const (
 	ELECTION_COLLECTION    = "election_collection"
 	CONTESTANTS_COLLECTION = "contestants_collection"
+	VOTERS_COLLECTION      = "voters_collection"
 )
 
 func Init() {
