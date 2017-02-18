@@ -111,3 +111,56 @@ func VoterLogin(w http.ResponseWriter, r *http.Request) {
 	return
 
 }
+
+func GetPreVotingDetailsHandler(w http.ResponseWriter, r *http.Request) {
+	conf := config.Get()
+
+	election := Election{}
+
+	mgoSession := conf.Database.Session.Copy()
+	defer mgoSession.Close()
+
+	collection := conf.Database.C(config.ELECTION_COLLECTION).With(mgoSession)
+
+	err := collection.Find(bson.M{
+		"id": "election",
+	}).One(&election)
+	if err != nil {
+		log.Println(err)
+	}
+
+	contestantsCollection := conf.Database.C(config.CONTESTANTS_COLLECTION).With(mgoSession)
+
+	type responseObj struct {
+		Key         int
+		Title       string
+		Contestants []Contestant
+	}
+
+	responseMap := map[int]responseObj{}
+
+	for _, v := range election.Positions {
+		currentContestants := []Contestant{}
+		contestantsCollection.Find(bson.M{
+			"key": v.Key,
+		}).All(&currentContestants)
+
+		responseMap[v.Key] = responseObj{
+			Key:         v.Key,
+			Title:       v.Title,
+			Contestants: currentContestants,
+		}
+	}
+
+	log.Println(responseMap)
+
+	responseArray := []responseObj{}
+	for i := 0; i < len(responseMap); i++ {
+		responseArray = append(responseArray, responseMap[i+1])
+	}
+
+	err = json.NewEncoder(w).Encode(responseArray)
+	if err != nil {
+		log.Println(err)
+	}
+}

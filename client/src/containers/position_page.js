@@ -14,7 +14,7 @@ PositionPage.oncreate = function(vnode){
   console.log(vnode.attrs)
   let key = vnode.attrs.id
   console.log(key)
-  this.Key = key
+  PositionPage.Key = key
   PositionModel.GetPosition(key).then((resp)=>{
     let currentPosition = resp.Election.Positions.find((p)=>{
       console.log(p)
@@ -22,7 +22,7 @@ PositionPage.oncreate = function(vnode){
       return p.Key == key
     })
     console.log(currentPosition)
-    this.Position = currentPosition.Title
+    PositionPage.Position = currentPosition.Title
     m.redraw()
   })
 }
@@ -31,8 +31,10 @@ PositionPage.oncreate = function(vnode){
 function addContestant(e){
   e.preventDefault()
   let name = document.getElementById("contestantInput").value
-  console.log(Position.Key)
-  PositionModel.NewCandidate(Position.Key,name,Position.Position)
+  document.getElementById("contestantInput").value = ""
+  console.log(PositionPage.Key)
+  console.log("key")
+  PositionModel.NewCandidate(PositionPage.Key,name,PositionPage.Position)
 }
 
 
@@ -47,7 +49,7 @@ PositionPage.view = function(){
         m("a[href=/admin].link.pa2.black.db.bg-near-white",{oncreate:m.route.link},"<  go back"),
 
         m("div",
-          m("h2",`Position: ${Position.Position}`),
+          m("h2",`Position: ${PositionPage.Position}`),
           m("div"),
           m("div",
             m("h3.fw4",
@@ -57,7 +59,7 @@ PositionPage.view = function(){
           ),
           m("form.tc",
             {
-              onsubmit:Position.addContestant,
+              onsubmit:addContestant,
             },
             m("input[type=text][placeholder=add contestant].pa2",{id:"contestantInput"}),
             m("button.pa2",{type:"submit"},"submit")

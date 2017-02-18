@@ -68,6 +68,8 @@ func main() {
 	router.Post("/api/add_voters", commonHandlers.ThenFunc(AddVotersFromCSV))
 	router.Post("/api/voter_login", commonHandlers.ThenFunc(VoterLogin))
 
+	router.Get("/api/election_details", commonHandlers.ThenFunc(GetPreVotingDetailsHandler))
+
 	fileServer := http.FileServer(http.Dir("./client/public"))
 	router.GET("/public/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		//w.Header().Set("Vary", "Accept-Encoding")
