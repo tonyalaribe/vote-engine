@@ -60,6 +60,9 @@ func main() {
 	router.Get("/api/new_contestant", commonHandlers.ThenFunc(AddContestantHandler))
 	router.Get("/api/get_position", commonHandlers.ThenFunc(GetPositionHandler))
 
+	router.Post("/api/start_voting", commonHandlers.ThenFunc(StartVotingHandler))
+	router.Post("/api/end_voting", commonHandlers.ThenFunc(EndVotingHandler))
+
 	fileServer := http.FileServer(http.Dir("./client/public"))
 	router.GET("/public/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		//w.Header().Set("Vary", "Accept-Encoding")

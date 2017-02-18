@@ -51,6 +51,39 @@ func NewSessionHandler(w http.ResponseWriter, r *http.Request) {
 		}, election)
 	if err != nil {
 		log.Println(err)
+		return
+	}
+
+	message := struct {
+		Message string
+	}{
+		Message: "Session created successfully",
+	}
+	err = json.NewEncoder(w).Encode(message)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+func EndSessionHandler(w http.ResponseWriter, r *http.Request) {
+	conf := config.Get()
+
+	mgoSession := conf.Database.Session.Copy()
+	defer mgoSession.Close()
+
+	err := conf.Database.With(mgoSession).DropDatabase()
+	if err != nil {
+		log.Println(err)
+	}
+
+	message := struct {
+		Message string
+	}{
+		Message: "Session ended successfully",
+	}
+	err = json.NewEncoder(w).Encode(message)
+	if err != nil {
+		log.Println(err)
 	}
 
 }
@@ -73,6 +106,71 @@ func GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println(election)
 	json.NewEncoder(w).Encode(&election)
+}
+
+func StartVotingHandler(w http.ResponseWriter, r *http.Request) {
+	conf := config.Get()
+
+	mgoSession := conf.Database.Session.Copy()
+	defer mgoSession.Close()
+
+	collection := conf.Database.C(config.ELECTION_COLLECTION).With(mgoSession)
+
+	_, err := collection.Upsert(
+		bson.M{
+			"id": "election",
+		}, bson.M{
+			"$set": bson.M{
+				"runningelection": true,
+			},
+		})
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	message := struct {
+		Message string
+	}{
+		Message: "Voting started successfully",
+	}
+	err = json.NewEncoder(w).Encode(message)
+	if err != nil {
+		log.Println(err)
+	}
+
+}
+
+func EndVotingHandler(w http.ResponseWriter, r *http.Request) {
+	conf := config.Get()
+
+	mgoSession := conf.Database.Session.Copy()
+	defer mgoSession.Close()
+
+	collection := conf.Database.C(config.ELECTION_COLLECTION).With(mgoSession)
+
+	_, err := collection.Upsert(
+		bson.M{
+			"id": "election",
+		}, bson.M{
+			"$set": bson.M{
+				"runningelection": false,
+			},
+		})
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	message := struct {
+		Message string
+	}{
+		Message: "Voting ended successfully",
+	}
+	err = json.NewEncoder(w).Encode(message)
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 func GetPositionHandler(w http.ResponseWriter, r *http.Request) {
