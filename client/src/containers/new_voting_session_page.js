@@ -1,15 +1,15 @@
-
 import m from 'mithril';
-import {VotingModel} from '../models/index.js'
+import {ElectionModel} from '../models/index.js';
+import Nav from '../components/nav.js';
 
 var NewVotingSessionPage = {
   increment:function(e){
     e.preventDefault()
-    VotingModel.Data.contestants++
+    ElectionModel.Data.contestants++
   },
   view:function(vnode){
     var positionsInput = []
-    var contestantsCount =  VotingModel.Data.contestants
+    var contestantsCount =  ElectionModel.Data.contestants
 
     for (let i=1; i<=contestantsCount; i++){
       //const x = i;
@@ -18,30 +18,31 @@ var NewVotingSessionPage = {
           m("label.pa3.dib:",`position ${i} title`),
           m(`input[placeholder=eg xyz election].pa2`,{onchange:m.withAttr("value",(v)=>{
             console.log(v);
-            VotingModel.AddPosition(v,i)
+            ElectionModel.AddPosition(v,i)
           }
         )})
         )
       )
     }
     return m("section.dt.w-100.vh-100.tc",
+     m(Nav),
       m("div.dtc.v-mid",
         m("form.tl.w-50.bg-white.pa4.dib",{onsubmit:(e)=>{
           console.log(e)
           e.preventDefault();
-          VotingModel.Submit()
+          ElectionModel.NewSession()
         }},
           m("div.mv2",
             m("label.w-50.dib","Name of Election"),
             m("input[type=text][placeholder=eg. SUG election].pa2",{onchange:m.withAttr("value",(v)=>{
               console.log(v)
-              VotingModel.Data.ElectionName = v
+              ElectionModel.Data.ElectionName = v
             })})
           ),
           m("div.mv2",
             m("label.w-50.dib","Election Type"),
             m("input[type=text][placeholder=eg. students].pa2",{onchange:m.withAttr("value",(v)=>{
-              VotingModel.Data.ElectionType = v
+              ElectionModel.Data.ElectionType = v
             })})
           ),
           m("div",

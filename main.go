@@ -57,11 +57,15 @@ func main() {
 
 	router.Post("/api/new_session", commonHandlers.ThenFunc(NewSessionHandler))
 	router.Get("/api/get_session", commonHandlers.ThenFunc(GetSessionHandler))
+	router.Get("/api/end_session", commonHandlers.ThenFunc(EndSessionHandler))
+
 	router.Get("/api/new_contestant", commonHandlers.ThenFunc(AddContestantHandler))
 	router.Get("/api/get_position", commonHandlers.ThenFunc(GetPositionHandler))
 
-	router.Post("/api/start_voting", commonHandlers.ThenFunc(StartVotingHandler))
-	router.Post("/api/end_voting", commonHandlers.ThenFunc(EndVotingHandler))
+	router.Get("/api/start_voting", commonHandlers.ThenFunc(StartVotingHandler))
+	router.Get("/api/end_voting", commonHandlers.ThenFunc(EndVotingHandler))
+
+	router.Post("/api/add_voters", commonHandlers.ThenFunc(AddVotersFromCSV))
 
 	fileServer := http.FileServer(http.Dir("./client/public"))
 	router.GET("/public/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {

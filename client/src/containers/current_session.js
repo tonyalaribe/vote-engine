@@ -20,9 +20,9 @@ CurrentSession.view = function(){
   return m("section.dt.w-100.vh-100.tc",
    m(Nav),
    m("div.dtc.v-mid",
-    m("div.tl.w-50.bg-white.pa4.dib.shadow-4",
+    m("div.tl.w-50.bg-white.dib.shadow-4",
       ElectionModel.IsElectionSession?
-      m("div",
+      m("div.pa4",
         m("h2","Current Session"),
         m("div",
           m("p",`Name: ${ElectionModel.Data.ElectionName}`),
@@ -35,13 +35,17 @@ CurrentSession.view = function(){
           )
         )
       ):"",
-      m("div.tc.pv4",
+      ElectionModel.IsElectionSession?m("div.pa4.bg-near-white.cf",
+        m("span","total registered voters: 200"),
+        m("a.dib.fr.pa2.bg-dark-gray.white[href=/add_voters]",{oncreate:m.route.link},"add users")
+      ):"",
+      m("div.tc.pa4",
         ElectionModel.IsElectionSession?
         [ElectionModel.Data.RunningElection?
-          m("button.pa3.ma1","End Election")
+          m("button.pa3.ma1",{onclick:ElectionModel.EndVoting},"End Election")
           :[
-            m("button.pa3.ma1","Commence Election"),
-            m("button.pa3.ma1","End Election Session")
+            m("button.pa3.ma1",{onclick:ElectionModel.StartVoting},"Commence Voting"),
+            m("button.pa3.ma1",{onclick:ElectionModel.EndElectionSession},"End Election Session")
           ]
         ]
         :

@@ -195,9 +195,13 @@ func GetPositionHandler(w http.ResponseWriter, r *http.Request) {
 	contestants := []Contestant{}
 
 	contestantsCollection := conf.Database.C(config.CONTESTANTS_COLLECTION).With(mgoSession)
+
 	err = contestantsCollection.Find(bson.M{
 		"key": key,
 	}).All(&contestants)
+	if err != nil {
+		log.Println(err)
+	}
 
 	data := struct {
 		Election    Election

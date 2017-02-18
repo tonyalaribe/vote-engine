@@ -8,6 +8,7 @@ import CurrentSession from './containers/current_session.js'
 import PositionPage from './containers/position_page.js'
 import Auth from './components/auth.js'
 import HomePage from './containers/home_page.js'
+import AddVotersPage from './containers/add_voters_page.js'
 
 
 m.route.prefix("")
@@ -24,6 +25,11 @@ m.route(document.getElementById('appContent'), "/", {
   "/new_session":{
         view: function(vnode) {
             return m(Auth,vnode.attrs,m(NewVotingSessionPage,vnode.attrs))
+        },
+      },
+  "/add_voters":{
+        view: function(vnode) {
+            return m(Auth,vnode.attrs,m(AddVotersPage,vnode.attrs))
         },
       },
   "/position/:id":{
