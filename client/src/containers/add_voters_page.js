@@ -11,6 +11,7 @@ AddVotersPage.view = function(){
      m(Nav),
      m("div.dtc.v-mid",
       m("div.tl.w-50.bg-white.dib.shadow-4.pa4",
+        m("p",`please add each user per line, comma separated. In this format "userid, Name of User"`),
         m("textarea.w-100.vh-50[id=voterscsv]"),
         m("div.tc.pv3",
           m("button.pa3",{onclick:ElectionModel.SubmitVoters},"submit voters")

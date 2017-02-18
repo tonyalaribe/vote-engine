@@ -36,8 +36,8 @@ CurrentSession.view = function(){
         )
       ):"",
       ElectionModel.IsElectionSession?m("div.pa4.bg-near-white.cf",
-        m("span","total registered voters: 200"),
-        m("a.dib.fr.pa2.bg-dark-gray.white[href=/add_voters]",{oncreate:m.route.link},"add users")
+        m("span",`total registered voters: ${ElectionModel.Data.VotersCount}`),
+        m("a.dib.fr.pa2.bg-dark-gray.white.link[href=/add_voters]",{oncreate:m.route.link},"add voters")
       ):"",
       m("div.tc.pa4",
         ElectionModel.IsElectionSession?

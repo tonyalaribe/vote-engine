@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/tonyalaribe/voting_server/config"
 )
@@ -16,26 +17,33 @@ type Voter struct {
 }
 
 func AddVotersFromCSV(w http.ResponseWriter, r *http.Request) {
-	voters := []Voter{}
 	var usersCSV [][]string
 	usersCSV, err := csv.NewReader(r.Body).ReadAll()
 	log.Printf("%+v", usersCSV)
 	if err != nil {
-		log.Println(usersCSV)
+		log.Println(err)
 	}
-	for _, v := range usersCSV {
-		voters = append(voters, Voter{
-			ID:       v[0],
-			Name:     v[1],
-			Password: "password",
-		})
-	}
+
 	conf := config.Get()
 	mgoSession := conf.Database.Session.Copy()
 	defer mgoSession.Close()
 
 	collection := conf.Database.C(config.VOTERS_COLLECTION).With(mgoSession)
-	collection.Bulk().Insert(voters)
+
+	bulk := collection.Bulk()
+
+	for _, v := range usersCSV {
+		bulk.Insert(Voter{
+			ID:       strings.TrimSpace(v[0]),
+			Name:     strings.TrimSpace(v[1]),
+			Password: "password",
+		})
+	}
+
+	_, err = bulk.Run()
+	if err != nil {
+		log.Println(err)
+	}
 
 	message := struct {
 		Message string

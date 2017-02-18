@@ -14,6 +14,7 @@ type Election struct {
 	ID              string
 	ElectionName    string
 	ElectionType    string
+	VotersCount     int
 	RunningElection bool
 	Positions       []struct {
 		Key   int
@@ -104,6 +105,15 @@ func GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
+
+	votersCollection := conf.Database.C(config.VOTERS_COLLECTION).With(mgoSession)
+
+	election.VotersCount, err = votersCollection.Count()
+	if err != nil {
+		log.Println(err)
+		//election.VotersCount = 0
+	}
+
 	log.Println(election)
 	json.NewEncoder(w).Encode(&election)
 }
