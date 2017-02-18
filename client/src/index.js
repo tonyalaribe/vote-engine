@@ -6,7 +6,8 @@ import ResultsPage from './containers/results_page.js'
 import NewVotingSessionPage from './containers/new_voting_session_page.js'
 import CurrentSession from './containers/current_session.js'
 import PositionPage from './containers/position_page.js'
-import Auth from './components/auth.js'
+import {VoterAuth, AdminAuth} from './components/auth.js'
+
 import HomePage from './containers/home_page.js'
 import AddVotersPage from './containers/add_voters_page.js'
 
@@ -19,22 +20,22 @@ m.route(document.getElementById('appContent'), "/", {
   "/results":ResultsPage,
   "/admin":{
         view: function(vnode) {
-            return m(Auth,vnode.attrs,m(CurrentSession,vnode.attrs))
+            return m(AdminAuth,vnode.attrs,m(CurrentSession,vnode.attrs))
         },
       },
   "/new_session":{
         view: function(vnode) {
-            return m(Auth,vnode.attrs,m(NewVotingSessionPage,vnode.attrs))
+            return m(AdminAuth,vnode.attrs,m(NewVotingSessionPage,vnode.attrs))
         },
       },
   "/add_voters":{
         view: function(vnode) {
-            return m(Auth,vnode.attrs,m(AddVotersPage,vnode.attrs))
+            return m(AdminAuth,vnode.attrs,m(AddVotersPage,vnode.attrs))
         },
       },
   "/position/:id":{
         view: function(vnode) {
-            return m(Auth,vnode.attrs,m(PositionPage,vnode.attrs))
+            return m(AdminAuth,vnode.attrs,m(PositionPage,vnode.attrs))
         },
       },
 });

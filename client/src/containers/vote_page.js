@@ -1,11 +1,14 @@
-var m = require("mithril")
-
+import m from "mithril";
+import Nav from '../components/nav.js'
 
 var VotePage = {
   view: function(){
     return m("section.vh-100.w-100.tc",
-      m("h1", "Vote Naija"),
-      m("h2.fw1","Vote"),
+      m(Nav),
+      m("div.pt5",
+        m("h1", "Vote Naija"),
+        m("h2.fw1","Vote")
+      ),
       m("div.mw7.dib.tl.w-100",
         m("div.tl.bg-white.shadow-4.pa4.mv1",
           m("h2.fw1","Position: President"),

@@ -66,6 +66,7 @@ func main() {
 	router.Get("/api/end_voting", commonHandlers.ThenFunc(EndVotingHandler))
 
 	router.Post("/api/add_voters", commonHandlers.ThenFunc(AddVotersFromCSV))
+	router.Post("/api/voter_login", commonHandlers.ThenFunc(VoterLogin))
 
 	fileServer := http.FileServer(http.Dir("./client/public"))
 	router.GET("/public/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {

@@ -16,10 +16,10 @@ ElectionModel.SubmitVoters = function(){
   let votersCSV = document.getElementById("voterscsv").value
   console.log(votersCSV)
   m.request({
-  method: "POST",
-  url: BACKEND_URL+"/api/add_voters",
-  data: votersCSV,
-  serialize:function(value){return value}
+    method: "POST",
+    url: BACKEND_URL+"/api/add_voters",
+    data: votersCSV,
+    serialize:function(value){return value}
   })
   .then(function(result) {
       console.log(result)
