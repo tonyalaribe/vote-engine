@@ -16,4 +16,17 @@ VoteModel.GetElectionData = function(){
   })
 }
 
+
+VoteModel.SubmitVote = function(voteData){
+  let user = localStorage.getItem("user")
+  console.log(user)
+  m.request({
+    method: "POST",
+    url: BACKEND_URL+"/api/cast_vote?user="+user,
+    data: voteData,
+  })
+  .then(function(result) {
+      console.log(result)
+  })
+}
 export default VoteModel;
