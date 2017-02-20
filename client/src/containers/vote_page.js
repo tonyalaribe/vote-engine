@@ -8,6 +8,13 @@ VotePage.oncreate = function(){
   VoteModel.GetElectionData()
 }
 
+VotePage.CastVote = function(){
+  let results = {}
+  VoteModel.Positions.map((v)=>{
+    results[v.Key] = document.getElementById(`position_${v.Key}`).value
+  })
+  console.log(results)
+}
 VotePage.view = function(){
 
     return m("section.vh-100.w-100.tc",
@@ -21,9 +28,9 @@ VotePage.view = function(){
           m("div.tl.bg-white.shadow-4.pa4.mv1",
             m("h2.fw1",`Position: ${p.Title}`),
             m("div",
-              m("select",
+              m("select",{id:`position_${p.Key}`},
                 p.Contestants.map((contestant)=>{
-                    return m("option",{value:contestant.Key},contestant.Name)
+                    return m("option",{value:contestant.ID},contestant.Name)
                 })
               )
             )
@@ -31,7 +38,7 @@ VotePage.view = function(){
         )
       }),
         m("div.tc.mv5",
-          m("button.pa3","Cast vote")
+          m("button.pa3",{onclick:VotePage.CastVote},"Cast vote")
         )
       )
 
