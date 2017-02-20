@@ -16,6 +16,7 @@ type Voter struct {
 	ID       string `bson:"_id"`
 	Name     string
 	Password string
+	HasVoted bool
 }
 
 func AddVotersFromCSV(w http.ResponseWriter, r *http.Request) {
@@ -163,4 +164,61 @@ func GetPreVotingDetailsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
+}
+
+func CastVoteHandler(w http.ResponseWriter, r *http.Request) {
+	user := r.URL.Query().Get("user")
+	log.Println(user)
+
+	conf := config.Get()
+
+	voter := Voter{}
+
+	mgoSession := conf.Database.Session.Copy()
+	defer mgoSession.Close()
+
+	collection := conf.Database.C(config.VOTERS_COLLECTION).With(mgoSession)
+
+	err := collection.Find(bson.M{
+		"_id": user,
+	}).One(&voter)
+	if err != nil {
+		log.Println(err)
+	}
+
+	if voter.HasVoted {
+		w.WriteHeader(http.StatusNotAcceptable)
+		json.NewEncoder(w).Encode(Message{
+			Message: "Has already Voted",
+			Code:    http.StatusNotAcceptable,
+		})
+		return
+	}
+
+	voteData := map[int]string{}
+	err = json.NewDecoder(r.Body).Decode(&voteData)
+	if err != nil {
+		log.Println(err)
+	}
+
+	contestantsCollection := conf.Database.C(config.VOTERS_COLLECTION).With(mgoSession)
+
+	for k, v := range voteData {
+		log.Println(k)
+		log.Println(v)
+
+		err := contestantsCollection.Update(
+			bson.M{
+				"_id": v,
+			}, bson.M{
+				"$inc": bson.M{
+					"Votes": 1,
+				},
+			})
+
+		if err != nil {
+			log.Println(err)
+		}
+	}
+
 }

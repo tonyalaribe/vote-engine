@@ -27,6 +27,12 @@ type Contestant struct {
 	Key      int
 	Position string
 	Name     string
+	Votes    int
+}
+
+type Message struct {
+	Message string
+	Code    int
 }
 
 func NewSessionHandler(w http.ResponseWriter, r *http.Request) {
@@ -55,11 +61,10 @@ func NewSessionHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	message := struct {
-		Message string
-	}{
+	message := Message{
 		Message: "Session created successfully",
 	}
+
 	err = json.NewEncoder(w).Encode(message)
 	if err != nil {
 		log.Println(err)

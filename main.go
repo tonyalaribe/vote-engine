@@ -67,6 +67,7 @@ func main() {
 
 	router.Post("/api/add_voters", commonHandlers.ThenFunc(AddVotersFromCSV))
 	router.Post("/api/voter_login", commonHandlers.ThenFunc(VoterLogin))
+	router.Post("/cast_vote", commonHandlers.ThenFunc(CastVoteHandler))
 
 	router.Get("/api/election_details", commonHandlers.ThenFunc(GetPreVotingDetailsHandler))
 
