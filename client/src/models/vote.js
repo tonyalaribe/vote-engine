@@ -5,6 +5,22 @@ var VoteModel = {
   Positions:[],
 }
 
+
+VoteModel.HasNotVoted = function(){
+  m.request({
+    method: "GET",
+    url: BACKEND_URL+"/api/has_not_voted",
+  })
+  .then(function(result) {
+      console.log(result)
+  },function(err){
+    console.log(err)
+    m.route.set("/results")
+  })
+}
+
+
+
 VoteModel.GetElectionData = function(){
   m.request({
     method: "GET",
@@ -18,7 +34,7 @@ VoteModel.GetElectionData = function(){
 
 
 VoteModel.SubmitVote = function(voteData){
-  let user = localStorage.getItem("user")
+  let user = localStorage.getItem("userID")
   console.log(user)
   m.request({
     method: "POST",
@@ -27,6 +43,7 @@ VoteModel.SubmitVote = function(voteData){
   })
   .then(function(result) {
       console.log(result)
+      m.route.set("/results")
   })
 }
 export default VoteModel;

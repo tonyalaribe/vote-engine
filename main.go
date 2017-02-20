@@ -50,6 +50,10 @@ func wrapHandler(h http.Handler) httprouter.Handle {
 	}
 }
 
+func init() {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+}
+
 func main() {
 	config.Init()
 	router := NewRouter()
@@ -67,7 +71,9 @@ func main() {
 
 	router.Post("/api/add_voters", commonHandlers.ThenFunc(AddVotersFromCSV))
 	router.Post("/api/voter_login", commonHandlers.ThenFunc(VoterLogin))
-	router.Post("/cast_vote", commonHandlers.ThenFunc(CastVoteHandler))
+	router.Post("/api/cast_vote", commonHandlers.ThenFunc(CastVoteHandler))
+
+	router.Get("/api/has_not_voted", commonHandlers.ThenFunc(HasVotedHandler))
 
 	router.Get("/api/election_details", commonHandlers.ThenFunc(GetPreVotingDetailsHandler))
 

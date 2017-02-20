@@ -5,6 +5,7 @@ import VoteModel from '../models/vote.js';
 
 var VotePage = {}
 VotePage.oncreate = function(){
+  VoteModel.HasNotVoted()
   VoteModel.GetElectionData()
 }
 
@@ -13,10 +14,11 @@ VotePage.CastVote = function(){
   VoteModel.Positions.map((v)=>{
     results[v.Key] = document.getElementById(`position_${v.Key}`).value
   })
-  console.log(results)
+  VoteModel.SubmitVote(results)
 }
-VotePage.view = function(){
 
+
+VotePage.view = function(){
     return m("section.vh-100.w-100.tc",
       m(Nav),
       m("div.pt5",

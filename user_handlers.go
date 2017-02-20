@@ -103,7 +103,6 @@ func VoterLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println(err)
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(Message{
 		Message: "Login Success",
@@ -135,6 +134,7 @@ func GetPreVotingDetailsHandler(w http.ResponseWriter, r *http.Request) {
 	type responseObj struct {
 		Key         int
 		Title       string
+		Votes       int
 		Contestants []Contestant
 	}
 
@@ -146,14 +146,13 @@ func GetPreVotingDetailsHandler(w http.ResponseWriter, r *http.Request) {
 			"key": v.Key,
 		}).All(&currentContestants)
 
+		log.Printf("%+v", currentContestants)
 		responseMap[v.Key] = responseObj{
 			Key:         v.Key,
 			Title:       v.Title,
 			Contestants: currentContestants,
 		}
 	}
-
-	log.Println(responseMap)
 
 	responseArray := []responseObj{}
 	for i := 0; i < len(responseMap); i++ {
@@ -184,6 +183,12 @@ func CastVoteHandler(w http.ResponseWriter, r *http.Request) {
 	}).One(&voter)
 	if err != nil {
 		log.Println(err)
+		w.WriteHeader(http.StatusNotAcceptable)
+		json.NewEncoder(w).Encode(Message{
+			Message: "Has already Voted",
+			Code:    http.StatusNotAcceptable,
+		})
+		return
 	}
 
 	if voter.HasVoted {
@@ -201,7 +206,7 @@ func CastVoteHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 
-	contestantsCollection := conf.Database.C(config.VOTERS_COLLECTION).With(mgoSession)
+	contestantsCollection := conf.Database.C(config.CONTESTANTS_COLLECTION).With(mgoSession)
 
 	for k, v := range voteData {
 		log.Println(k)
@@ -209,10 +214,10 @@ func CastVoteHandler(w http.ResponseWriter, r *http.Request) {
 
 		err := contestantsCollection.Update(
 			bson.M{
-				"_id": v,
+				"_id": bson.ObjectIdHex(v),
 			}, bson.M{
 				"$inc": bson.M{
-					"Votes": 1,
+					"votes": 1,
 				},
 			})
 
@@ -221,4 +226,66 @@ func CastVoteHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	err = collection.Update(
+		bson.M{
+			"_id": user,
+		},
+		bson.M{
+			"$set": bson.M{
+				"hasvoted": true,
+			},
+		})
+
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusNotAcceptable)
+		json.NewEncoder(w).Encode(Message{
+			Message: "Has already Voted",
+			Code:    http.StatusNotAcceptable,
+		})
+		return
+	}
+
+}
+
+func HasVotedHandler(w http.ResponseWriter, r *http.Request) {
+	user := r.URL.Query().Get("user")
+	log.Println(user)
+
+	conf := config.Get()
+
+	voter := Voter{}
+
+	mgoSession := conf.Database.Session.Copy()
+	defer mgoSession.Close()
+
+	collection := conf.Database.C(config.VOTERS_COLLECTION).With(mgoSession)
+
+	err := collection.Find(bson.M{
+		"_id": user,
+	}).One(&voter)
+	if err != nil {
+		log.Println(err)
+		w.WriteHeader(http.StatusNotAcceptable)
+		json.NewEncoder(w).Encode(Message{
+			Message: "Has already Voted",
+			Code:    http.StatusNotAcceptable,
+		})
+		return
+	}
+
+	if voter.HasVoted {
+		w.WriteHeader(http.StatusNotAcceptable)
+		json.NewEncoder(w).Encode(Message{
+			Message: "Has already Voted",
+			Code:    http.StatusNotAcceptable,
+		})
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(Message{
+		Message: "Has not Voted",
+		Code:    http.StatusNotAcceptable,
+	})
 }

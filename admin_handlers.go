@@ -44,7 +44,6 @@ func NewSessionHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 
-	log.Println(election)
 	mgoSession := conf.Database.Session.Copy()
 	defer mgoSession.Close()
 
@@ -119,7 +118,6 @@ func GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 		//election.VotersCount = 0
 	}
 
-	log.Println(election)
 	json.NewEncoder(w).Encode(&election)
 }
 
