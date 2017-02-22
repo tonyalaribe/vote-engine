@@ -266,9 +266,9 @@ func HasVotedHandler(w http.ResponseWriter, r *http.Request) {
 	}).One(&voter)
 	if err != nil {
 		log.Println(err)
-		w.WriteHeader(http.StatusNotAcceptable)
+		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(Message{
-			Message: "Has already Voted",
+			Message: "Has not Voted",
 			Code:    http.StatusNotAcceptable,
 		})
 		return

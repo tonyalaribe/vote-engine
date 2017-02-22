@@ -2,14 +2,22 @@ import m from 'mithril';
 import {ElectionModel} from '../models/index.js';
 import Nav from '../components/nav.js';
 
-var NewVotingSessionPage = {
-  increment:function(e){
+var NewVotingSessionPage = {}
+
+NewVotingSessionPage.oncreate = function(){
+    ElectionModel.Data.contestants = 0
+    ElectionModel.Data.Positions = []
+
+}
+
+NewVotingSessionPage.increment = function(e){
     e.preventDefault()
     ElectionModel.Data.contestants++
-  },
-  view:function(vnode){
+  }
+
+NewVotingSessionPage.view = function(){
     var positionsInput = []
-    var contestantsCount =  ElectionModel.Data.contestants
+    var contestantsCount =  ElectionModel.Data.contestants;
 
     for (let i=1; i<=contestantsCount; i++){
       //const x = i;
@@ -50,7 +58,7 @@ var NewVotingSessionPage = {
             positionsInput
           ),
           m("div",
-            m("button.pa2",{onclick:this.increment},"add position")
+            m("button.pa2",{onclick:NewVotingSessionPage.increment},"add position")
           ),
           m("div.mv3.tr",
             m("button.ph3.pv2", "submit")
@@ -59,6 +67,6 @@ var NewVotingSessionPage = {
       )
     )
   }
-}
+
 
 export default NewVotingSessionPage;
