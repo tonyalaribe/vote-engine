@@ -22,7 +22,7 @@ VotePage.view = function(){
     return m("section.vh-100.w-100.tc",
       m(Nav),
       m("div.pt5",
-        m("h1", "Vote Naija"),
+        m("h1", "College of Education Ikere-Ekiti"),
         m("h2.fw1","Vote")
       ),
       VoteModel.Positions.map((p)=>{

@@ -12,7 +12,7 @@ ResultsPage.view = function(){
     return m("section.vh-100.w-100.tc",
       m(Nav),
       m("div.pt5",
-        m("h1", "Vote Engine"),
+        m("h1", "College of Education Ikere-Ekiti"),
         m("h2.fw1","Results")
       ),
 
