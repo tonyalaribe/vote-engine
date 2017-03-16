@@ -20,6 +20,7 @@ CurrentSession.view = function(){
   return m("section.dt.w-100.vh-100.tc",
    m(Nav),
    m("div.dtc.v-mid",
+     m("h1", "College of Education Ikere-Ekiti"),
     m("div.tl.w-50.bg-white.dib.shadow-4",
       ElectionModel.IsElectionSession?
       m("div.pa4",
