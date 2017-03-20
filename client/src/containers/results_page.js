@@ -12,7 +12,10 @@ ResultsPage.view = function(){
     return m("section.vh-100.w-100.tc",
       m(Nav),
       m("div.pt5",
-        m("h1", "College of Education Ikere-Ekiti"),
+      m("div.tc",
+        m("img.h4",{src:"/public/images/logo.jpg"})
+      ),
+      m("h3", "College of Education Ikere-Ekiti"),
         m("h2.fw1","Results")
       ),
 

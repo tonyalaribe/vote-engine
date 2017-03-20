@@ -9,9 +9,7 @@ var PositionPage = {
 }
 
 PositionPage.oncreate = function(vnode){
-  console.log(vnode)
-  console.log("vnode")
-  console.log(vnode.attrs)
+
   let key = vnode.attrs.id
   console.log(key)
   PositionPage.Key = key

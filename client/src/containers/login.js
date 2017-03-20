@@ -43,7 +43,10 @@ LoginPage.view =  function() {
   return m("div.vh-100.v-mid.w-100.tc.dt bg-near-white",[
       m("div.tc.dtc.v-mid.w-50.w-100-ns",
       [
-        m("h1", "College of Education Ikere-Ekiti"),
+        m("div.tc",
+          m("img.h4",{src:"/public/images/logo.jpg"})
+        ),
+        m("h3", "College of Education Ikere-Ekiti"),
         m("form.dib.bg-white.shadow-4.pa4.w-90.w-50-ns",
         {
           onsubmit:LoginPage.login,

@@ -6,7 +6,6 @@ import Nav from '../components/nav.js'
 var CurrentSession = {}
 
 CurrentSession.oncreate = function(vnode) {
-  console.log("on create")
   ElectionModel.GetDetails()
 }
 
@@ -20,7 +19,10 @@ CurrentSession.view = function(){
   return m("section.dt.w-100.vh-100.tc",
    m(Nav),
    m("div.dtc.v-mid",
-     m("h1", "College of Education Ikere-Ekiti"),
+   m("div.tc",
+     m("img.h4",{src:"/public/images/logo.jpg"})
+   ),
+   m("h3", "College of Education Ikere-Ekiti"),
     m("div.tl.w-50.bg-white.dib.shadow-4",
       ElectionModel.IsElectionSession?
       m("div.pa4",

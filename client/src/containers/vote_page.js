@@ -22,8 +22,11 @@ VotePage.view = function(){
     return m("section.vh-100.w-100.tc",
       m(Nav),
       m("div.pt5",
-        m("h1", "College of Education Ikere-Ekiti"),
-        m("h2.fw1","Vote")
+      m("div.tc",
+        m("img.h4",{src:"/public/images/logo.jpg"})
+      ),
+      m("h3", "College of Education Ikere-Ekiti"),
+        m("h2.fw1","Cast your Vote")
       ),
       VoteModel.Positions.map((p)=>{
         return m("div.mw7.dib.tl.w-100",
