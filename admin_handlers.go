@@ -92,7 +92,7 @@ func EndSessionHandler(w http.ResponseWriter, r *http.Request) {
 	}{
 		Message: "Session ended successfully",
 	}
-	err = json.NewEncoder(w).Encode(message)
+	err := json.NewEncoder(w).Encode(message)
 	if err != nil {
 		log.Println(err)
 	}
