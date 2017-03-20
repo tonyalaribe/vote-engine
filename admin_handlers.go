@@ -76,10 +76,16 @@ func EndSessionHandler(w http.ResponseWriter, r *http.Request) {
 	mgoSession := conf.Database.Session.Copy()
 	defer mgoSession.Close()
 
-	err := conf.Database.With(mgoSession).DropDatabase()
-	if err != nil {
-		log.Println(err)
-	}
+	// err := conf.Database.With(mgoSession).DropDatabase()
+	// if err != nil {
+	// 	log.Println(err)
+	// }
+
+	conf.Database.C(config.ELECTION_COLLECTION).With(mgoSession).DropCollection()
+
+	conf.Database.C(config.CONTESTANTS_COLLECTION).With(mgoSession).DropCollection()
+
+	conf.Database.C(config.VOTERS_COLLECTION).With(mgoSession).DropCollection()
 
 	message := struct {
 		Message string
