@@ -43,7 +43,7 @@ PositionPage.view = function(){
   return m("section.dt.w-100.vh-100.tc",
     m(Nav),
      m("div.dtc.v-mid",
-      m("div.tl.w-50.bg-white.pa4.dib.shadow-4",
+      m("div.tl.100.w-50-ns.bg-white.pa4.dib.shadow-4",
         m("a[href=/admin].link.pa2.black.db.bg-near-white",{oncreate:m.route.link},"<  go back"),
 
         m("div",
@@ -60,7 +60,7 @@ PositionPage.view = function(){
               onsubmit:addContestant,
             },
             m("input[type=text][placeholder=add contestant].pa2",{id:"contestantInput"}),
-            m("button.pa2",{type:"submit"},"submit")
+            m("button.ph2.pv3.bg-navy.shadow-4.white-80.ml2.bw0",{type:"submit"},"submit")
           )
         )
       )

@@ -7,7 +7,7 @@ var Nav = {
     m.route.set("/login")
   },
   view:function(){
-    return m("nav.fixed.w-100.bg-black.white.pa2.tc.top-0",
+    return m("nav.fixed.w-100.bg-navy.shadow-4.white.pa2.tc.top-0",
       m("a[href=/].white.link.dib.pa2",{oncreate: m.route.link},"home"),
       m("a[href=/results].white.link.dib.pa2",{oncreate: m.route.link},"results"),
       m("a.pointer.white.link.dib.pa2",{onclick:this.logout},"logout")

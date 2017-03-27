@@ -23,9 +23,9 @@ VotePage.view = function(){
       m(Nav),
       m("div.pt5",
       m("div.tc",
-        m("img.h4",{src:"/public/images/logo.jpg"})
+        m("img.h3.h4-ns",{src:"/public/images/logo.jpg"})
       ),
-      m("h3", "College of Education Ikere-Ekiti"),
+      m("h3.f5.navy", "College of Education Ikere-Ekiti"),
         m("h2.fw1","Cast your Vote")
       ),
       VoteModel.Positions.map((p)=>{
@@ -33,7 +33,7 @@ VotePage.view = function(){
           m("div.tl.bg-white.shadow-4.pa4.mv1",
             m("h2.fw1",`Position: ${p.Title}`),
             m("div",
-              m("select",{id:`position_${p.Key}`},
+              m("select.ba.bg-transparent",{id:`position_${p.Key}`},
                 p.Contestants.map((contestant)=>{
                     return m("option",{value:contestant.ID},contestant.Name)
                 })
@@ -43,7 +43,7 @@ VotePage.view = function(){
         )
       }),
         m("div.tc.mv5",
-          m("button.pa3",{onclick:VotePage.CastVote},"Cast vote")
+          m("button.pa3.bg-navy.white-80.shadow-4.bw0",{onclick:VotePage.CastVote},"Cast vote")
         )
       )
 

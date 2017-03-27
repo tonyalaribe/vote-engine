@@ -36,10 +36,10 @@ NewVotingSessionPage.view = function(){
      m(Nav),
       m("div.dtc.v-mid",
       m("div.tc",
-        m("img.h4",{src:"/public/images/logo.jpg"})
+        m("img.h3.h4-ns",{src:"/public/images/logo.jpg"})
       ),
-      m("h3", "College of Education Ikere-Ekiti"),
-        m("form.tl.w-50.bg-white.pa4.dib",{onsubmit:(e)=>{
+      m("h3.f5.navy", "College of Education Ikere-Ekiti"),
+        m("form.tl.w-100.w-50-ns.shadow-4.pa4.dib",{onsubmit:(e)=>{
           console.log(e)
           e.preventDefault();
           ElectionModel.NewSession()
@@ -62,10 +62,10 @@ NewVotingSessionPage.view = function(){
             positionsInput
           ),
           m("div",
-            m("button.pa2",{onclick:NewVotingSessionPage.increment},"add position")
+            m("button.pv2.ph3.bg-navy.bw0.shadow-4.white-80.grow",{onclick:NewVotingSessionPage.increment},"add position")
           ),
           m("div.mv3.tr",
-            m("button.ph3.pv2", "submit")
+            m("button.pv2.ph3.bg-navy.bw0.shadow-4.white-80.grow", "submit")
           )
         )
       )

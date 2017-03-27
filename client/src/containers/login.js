@@ -40,32 +40,32 @@ LoginPage.login = function(e){
 }
 
 LoginPage.view =  function() {
-  return m("div.vh-100.v-mid.w-100.tc.dt bg-near-white",[
+  return m("div.vh-100.v-mid.w-100.tc.dt ",[
       m("div.tc.dtc.v-mid.w-50.w-100-ns",
       [
         m("div.tc",
-          m("img.h4",{src:"/public/images/logo.jpg"})
+          m("img.h3.h4-ns",{src:"/public/images/logo.jpg"})
         ),
-        m("h3", "College of Education Ikere-Ekiti"),
-        m("form.dib.bg-white.shadow-4.pa4.w-90.w-50-ns",
+        m("h3.f5.navy", "College of Education Ikere-Ekiti"),
+        m("form.dib.bg-white.shadow-4.pa2.pa4-ns.w-90.w-50-ns",
         {
           onsubmit:LoginPage.login,
         },
         [
-          m("h2.f3.fw1.pt3","Login"),
+          m("h2.f3.fw1.pt3.navy","Login"),
           LoginPage.error?m("span","wrong user id or password"):"",
-          m("div.dib.w-100.pt3", [
-            m("div.tl.mv2.w-100",[
+          m("div.dib.w-100.pt3.pa1", [
+            m("div.tl.mv2.w-100.pv2",[
               m("label","username"),
-              m("input[type=text][id=username].db.pa2.mv2.w-100",
+              m("input[type=text][id=username].db.pa2.mv2.w-100.ba.b--gray",
               {
                 placeholder:"username"
               }
             ),
             ]),
-            m("div.tl.mv2",[
+            m("div.tl.mv2.pv",[
               m("label","passcode"),
-              m("input[type=text][id=password].db.pa2.mv2.w-100",
+              m("input[type=text][id=password].db.pa2.mv2.w-100.ba.b--gray",
               {
                 placeholder:"passcode"
               }
@@ -74,7 +74,7 @@ LoginPage.view =  function() {
           ]),
           m("br"),
           m("div.dib.pv2",
-            m("button.dib.pa2.ba.bg-white[type=submit]", "login")
+            m("button.dib.pv3.ph4.bg-navy.white-80.shadow-4.grow.pointer.ba[type=submit]", "login")
           )
         ])
 
