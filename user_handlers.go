@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"log"
+	"math/rand"
 	"net/http"
 	"strings"
 
@@ -14,9 +15,19 @@ import (
 
 type Voter struct {
 	ID       string `bson:"_id"`
-	Name     string
+	Phone    string
 	Password string
 	HasVoted bool
+}
+
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+func RandStringBytes(n int) string {
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letterBytes[rand.Intn(len(letterBytes))]
+	}
+	return string(b)
 }
 
 func AddVotersFromCSV(w http.ResponseWriter, r *http.Request) {
@@ -36,11 +47,25 @@ func AddVotersFromCSV(w http.ResponseWriter, r *http.Request) {
 	bulk := collection.Bulk()
 
 	for _, v := range usersCSV {
+
+		password := RandStringBytes(5)
+
 		bulk.Insert(Voter{
 			ID:       strings.TrimSpace(v[0]),
-			Name:     strings.TrimSpace(v[1]),
-			Password: "password",
+			Phone:    strings.TrimSpace(v[1]),
+			Password: password,
 		})
+
+		resp, err := http.Get("http://www.bulksmsnigeria.net/components/com_spc/smsapi.php?username=anthonyalaribe@gmail.com&password=irhose&sender=voter&recipient=" + strings.TrimSpace(v[1]) + "&message=Hello,+Your+password+to+allow+you+vote+is+" + password + "&")
+
+		p := []byte{}
+		resp.Body.Read(p)
+		log.Println(p)
+
+		if err != nil {
+			log.Println(err)
+		}
+
 	}
 
 	_, err = bulk.Run()
