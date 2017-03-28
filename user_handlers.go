@@ -20,7 +20,7 @@ type Voter struct {
 	HasVoted bool
 }
 
-const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const letterBytes = "abcdefghijklmnopqrstuvwxyz"
 
 func RandStringBytes(n int) string {
 	b := make([]byte, n)
@@ -117,9 +117,11 @@ func VoterLogin(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
+	//
+	// log.Printf("voter: %+v , retrievedVoter: %+v", voter, retrievedVoter)
 
-	if voter.Password != retrievedVoter.Password {
-		log.Println(err)
+	if strings.TrimSpace(voter.Password) != strings.TrimSpace(retrievedVoter.Password) {
+
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(Message{
 			Message: "Wrong Password",
