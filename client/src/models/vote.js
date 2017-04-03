@@ -7,9 +7,10 @@ var VoteModel = {
 
 
 VoteModel.HasNotVoted = function(){
+  let user = localStorage.getItem("userID")
   m.request({
     method: "GET",
-    url: BACKEND_URL+"/api/has_not_voted",
+    url: BACKEND_URL+"/api/has_not_voted?user="+user
   })
   .then(function(result) {
       console.log(result)
@@ -18,7 +19,6 @@ VoteModel.HasNotVoted = function(){
     m.route.set("/results")
   })
 }
-
 
 
 VoteModel.GetElectionData = function(){

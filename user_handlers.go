@@ -96,22 +96,44 @@ func VoterLogin(w http.ResponseWriter, r *http.Request) {
 	mgoSession := conf.Database.Session.Copy()
 	defer mgoSession.Close()
 
+	type Message struct {
+		Message  string
+		Error    error
+		Code     int
+		HasVoted bool
+	}
+
+	election := Election{}
+
+	collection2 := conf.Database.C(config.ELECTION_COLLECTION).With(mgoSession)
+
+	err = collection2.Find(bson.M{
+		"id": "election",
+	}).One(&election)
+	if err != nil {
+		log.Println(err)
+	}
+
+	if !election.RunningElection {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(Message{
+			Message: "Please Voting is yet to Begin",
+			Error:   err,
+			Code:    http.StatusInternalServerError,
+		})
+		return
+	}
+
 	collection := conf.Database.C(config.VOTERS_COLLECTION).With(mgoSession)
 	err = collection.Find(bson.M{
 		"_id": voter.ID,
 	}).One(&retrievedVoter)
 
-	type Message struct {
-		Message string
-		Error   error
-		Code    int
-	}
-
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(Message{
-			Message: "unsuccessful",
+			Message: "This account does not exist in our Database ",
 			Error:   err,
 			Code:    http.StatusInternalServerError,
 		})
@@ -124,7 +146,7 @@ func VoterLogin(w http.ResponseWriter, r *http.Request) {
 
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(Message{
-			Message: "Wrong Password",
+			Message: "Incorrect Passowrd",
 			Code:    http.StatusInternalServerError,
 		})
 		return
@@ -132,8 +154,9 @@ func VoterLogin(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(Message{
-		Message: "Login Success",
-		Code:    http.StatusOK,
+		Message:  "Login Success",
+		Code:     http.StatusOK,
+		HasVoted: retrievedVoter.HasVoted,
 	})
 	return
 

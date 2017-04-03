@@ -2,7 +2,8 @@ var m = require("mithril")
 const BACKEND_URL = ""
 
 var LoginPage = {
-  error:false
+  error:false,
+  errorMessage:""
 }
 
 LoginPage.login = function(e){
@@ -32,10 +33,12 @@ LoginPage.login = function(e){
       console.log(result)
       localStorage.setItem("auth","user")
       localStorage.setItem("userID",username)
-      m.route.set("/",{},{})
+      result.HasVoted?m.route.set("/results",{},{}):m.route.set("/",{},{})
+
   },function(error){
     console.log(error)
     LoginPage.error = true
+    LoginPage.errorMessage = error.Message
   })
 }
 
@@ -53,7 +56,7 @@ LoginPage.view =  function() {
         },
         [
           m("h2.f3.fw1.pt3.navy","Login"),
-          LoginPage.error?m("span","wrong user id or password"):"",
+
           m("div.dib.w-100.pt3.pa1", [
             m("div.tl.mv2.w-100.pv2",[
               m("label","username"),
@@ -74,7 +77,10 @@ LoginPage.view =  function() {
           ]),
           m("br"),
           m("div.dib.pv2",
-            m("button.dib.pv3.ph4.bg-navy.white-80.shadow-4.grow.pointer.ba[type=submit]", "login")
+            LoginPage.error?m("div",
+              m("span.dib.pa3",LoginPage.errorMessage)):"",
+            m("button.dib.pv3.ph4.bg-navy.white-80.shadow-4.grow.pointer.ba[type=submit]", "login"),
+            m("a[href=/results].dib.pv3.ph4.mh2.navy.ba.white-80.shadow-4.grow.pointer.link",{oncreate: m.route.link}, "results")
           )
         ])
 
